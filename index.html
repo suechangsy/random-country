@@ -2,73 +2,62 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>Random Country Generator</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Random Country Map</title>
   <style>
-    body {
-      font-family: Arial, sans-serif;
-      text-align: center;
-      background: #f1f5f9;
-      padding: 40px;
-    }
-    button {
-      padding: 10px 20px;
-      font-size: 16px;
-      border-radius: 12px;
-      border: none;
-      background: #2563eb;
-      color: white;
-      cursor: pointer;
-    }
-    .card {
-      margin-top: 30px;
-      background: white;
-      padding: 30px;
-      border-radius: 20px;
-      display: inline-block;
-      box-shadow: 0 10px 25px rgba(0,0,0,0.1);
-    }
-    .zh {
-      font-size: 36px;
-      font-weight: bold;
-    }
-    .pinyin {
-      font-size: 20px;
-      color: #555;
-    }
-    .en {
-      font-size: 16px;
-      color: #888;
-    }
+    body { font-family: Arial, sans-serif; text-align: center; background: #f1f5f9; padding: 20px; }
+    button { padding: 10px 20px; font-size: 16px; border-radius: 12px; border: none; background: #2563eb; color: white; cursor: pointer; margin-bottom:20px; }
+    #info { margin-top: 20px; font-size: 20px; }
+    svg { width: 90%; max-width: 1200px; height: auto; border: 1px solid #ccc; margin-top: 20px; }
+    .highlight { fill: red !important; }
   </style>
 </head>
 <body>
 
-<h1>🌍 Random Country</h1>
-<button onclick="generate()">Generate</button>
+<h1>🌍 Random Country Map</h1>
+<button onclick="randomCountry()">Generate Country</button>
+<div id="info"></div>
 
-<div id="card"></div>
+<div id="mapContainer">
+  <!-- Lightweight SVG world map with ISO-coded paths -->
+  <svg viewBox="0 0 2000 1001">
+    <path id="CN" fill="#cbd5e1" d="M1000,500 L1010,500 L1010,510 L1000,510 Z"/>
+    <path id="US" fill="#cbd5e1" d="M900,400 L910,400 L910,410 L900,410 Z"/>
+    <path id="JP" fill="#cbd5e1" d="M1100,450 L1110,450 L1110,460 L1100,460 Z"/>
+    <!-- Add more simplified paths for all countries or replace with full SVG -->
+  </svg>
+</div>
 
 <script>
 const countries = [
-  { zh: "中国", pinyin: "Zhōngguó", en: "China" },
-  { zh: "美国", pinyin: "Měiguó", en: "United States" },
-  { zh: "日本", pinyin: "Rìběn", en: "Japan" },
-  { zh: "法国", pinyin: "Fǎguó", en: "France" },
-  { zh: "德国", pinyin: "Déguó", en: "Germany" },
-  { zh: "巴西", pinyin: "Bāxī", en: "Brazil" }
+  {code:"CN", zh:"中国", pinyin:"Zhōngguó", en:"China"},
+  {code:"US", zh:"美国", pinyin:"Měiguó", en:"United States"},
+  {code:"JP", zh:"日本", pinyin:"Rìběn", en:"Japan"},
+  {code:"FR", zh:"法国", pinyin:"Fǎguó", en:"France"},
+  {code:"DE", zh:"德国", pinyin:"Déguó", en:"Germany"},
+  {code:"BR", zh:"巴西", pinyin:"Bāxī", en:"Brazil"}
+  // … continue list for all 250+ ISO countries
 ];
 
-function generate() {
+function randomCountry() {
+  // Reset previous highlights
+  document.querySelectorAll("#mapContainer svg path").forEach(el => el.setAttribute("fill","#cbd5e1"));
+
+  // Pick random country
   const c = countries[Math.floor(Math.random() * countries.length)];
-  document.getElementById("card").innerHTML = `
-    <div class="card">
-      <div class="zh">${c.zh}</div>
-      <div class="pinyin">${c.pinyin}</div>
-      <div class="en">${c.en}</div>
-    </div>
-  `;
+
+  // Display country info
+  document.getElementById("info").innerHTML =
+    `<div style="font-size:36px">${c.zh}</div>
+     <div style="font-size:20px;color:#555">${c.pinyin}</div>
+     <div style="font-size:16px;color:#888">${c.en}</div>`;
+
+  // Highlight country on map
+  const countryEl = document.getElementById(c.code);
+  if(countryEl) countryEl.setAttribute("fill","red");
 }
 </script>
 
 </body>
 </html>
+
