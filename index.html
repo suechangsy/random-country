@@ -1,160 +1,50 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <title>Random Country Generator</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      text-align: center;
-      background: #f1f5f9;
-      padding: 40px;
-    }
-    button {
-      padding: 10px 20px;
-      font-size: 16px;
-      border-radius: 12px;
-      border: none;
-      background: #2563eb;
-      color: white;
-      cursor: pointer;
-    }
-    .card {
-      margin-top: 30px;
-      background: white;
-      padding: 30px;
-      border-radius: 20px;
-      display: inline-block;
-      box-shadow: 0 10px 25px rgba(0,0,0,0.1);
-    }
-    .zh {
-      font-size: 36px;
-      font-weight: bold;
-    }
-    .pinyin {
-      font-size: 20px;
-      color: #555;
-    }
-    .en {
-      font-size: 16px;
-      color: #888;
-    }
-  </style>
-</head>
-<body>
-
-<h1>🌍 Random Country</h1>
-<button onclick="generate()">Generate</button>
-
-<div id="card"></div>
-
 <script>
 const countries = [
-{"code":"AF","en":"Afghanistan","zh":"阿富汗","pinyin":"Āfùhàn"},
-{"code":"AL","en":"Albania","zh":"阿尔巴尼亚","pinyin":"Ā’ěrbāníyà"},
-{"code":"DZ","en":"Algeria","zh":"阿尔及利亚","pinyin":"Ā’ěrjílìyà"},
-{"code":"AD","en":"Andorra","zh":"安道尔","pinyin":"Āndào’ěr"},
-{"code":"AO","en":"Angola","zh":"安哥拉","pinyin":"Āngēlā"},
-{"code":"AG","en":"Antigua and Barbuda","zh":"安提瓜和巴布达","pinyin":"Āntíguā hé Bābùdá"},
-{"code":"AR","en":"Argentina","zh":"阿根廷","pinyin":"Āgēntíng"},
-{"code":"AM","en":"Armenia","zh":"亚美尼亚","pinyin":"Yàměiníyà"},
-{"code":"AU","en":"Australia","zh":"澳大利亚","pinyin":"Àodàlìyà"},
-{"code":"AT","en":"Austria","zh":"奥地利","pinyin":"Àodìlì"},
-{"code":"AZ","en":"Azerbaijan","zh":"阿塞拜疆","pinyin":"Āsàibàijiāng"},
-{"code":"BS","en":"Bahamas","zh":"巴哈马","pinyin":"Bāhāmǎ"},
-{"code":"BH","en":"Bahrain","zh":"巴林","pinyin":"Bālín"},
-{"code":"BD","en":"Bangladesh","zh":"孟加拉国","pinyin":"Mèngjiālāguó"},
-{"code":"BB","en":"Barbados","zh":"巴巴多斯","pinyin":"Bābāduōsī"},
-{"code":"BY","en":"Belarus","zh":"白俄罗斯","pinyin":"Bái’éluósī"},
-{"code":"BE","en":"Belgium","zh":"比利时","pinyin":"Bǐlìshí"},
-{"code":"BZ","en":"Belize","zh":"伯利兹","pinyin":"Bólìzī"},
-{"code":"BJ","en":"Benin","zh":"贝宁","pinyin":"Bèiníng"},
-{"code":"BT","en":"Bhutan","zh":"不丹","pinyin":"Bùdān"},
-{"code":"BO","en":"Bolivia","zh":"玻利维亚","pinyin":"Bōlìwéiyà"},
-{"code":"BA","en":"Bosnia and Herzegovina","zh":"波斯尼亚和黑塞哥维那","pinyin":"Bōsīníyà hé Hēisāigēwéinà"},
-{"code":"BW","en":"Botswana","zh":"博茨瓦纳","pinyin":"Bóchíwǎnà"},
-{"code":"BR","en":"Brazil","zh":"巴西","pinyin":"Bāxī"},
-{"code":"BN","en":"Brunei","zh":"文莱","pinyin":"Wénlái"},
-{"code":"BG","en":"Bulgaria","zh":"保加利亚","pinyin":"Bǎojiālìyà"},
-{"code":"BF","en":"Burkina Faso","zh":"布基纳法索","pinyin":"Bùjīnà Fǎsuǒ"},
-{"code":"BI","en":"Burundi","zh":"布隆迪","pinyin":"Bùlóngdí"},
-{"code":"KH","en":"Cambodia","zh":"柬埔寨","pinyin":"Jiǎnpǔzhài"},
-{"code":"CM","en":"Cameroon","zh":"喀麦隆","pinyin":"Kāmàilóng"},
-{"code":"CA","en":"Canada","zh":"加拿大","pinyin":"Jiānádà"},
-{"code":"CV","en":"Cape Verde","zh":"佛得角","pinyin":"Fódéjiǎo"},
-{"code":"CF","en":"Central African Republic","zh":"中非共和国","pinyin":"Zhōngfēi Gònghéguó"},
-{"code":"TD","en":"Chad","zh":"乍得","pinyin":"Zhàdé"},
-{"code":"CL","en":"Chile","zh":"智利","pinyin":"Zhìlì"},
-{"code":"CN","en":"China","zh":"中国","pinyin":"Zhōngguó"},
-{"code":"CO","en":"Colombia","zh":"哥伦比亚","pinyin":"Gēlúnbǐyà"},
-{"code":"KM","en":"Comoros","zh":"科摩罗","pinyin":"Kēmóluó"},
-{"code":"CG","en":"Congo (Republic)","zh":"刚果（布）","pinyin":"Gāngguǒ (Bù)"},
-{"code":"CD","en":"Congo (DRC)","zh":"刚果（金）","pinyin":"Gāngguǒ (Jīn)"},
-{"code":"CR","en":"Costa Rica","zh":"哥斯达黎加","pinyin":"Gēsīdálíjiā"},
-{"code":"CI","en":"Côte d'Ivoire","zh":"象牙海岸","pinyin":"Xiàngyá Hǎi’àn"},
-{"code":"HR","en":"Croatia","zh":"克罗地亚","pinyin":"Kèluódìyà"},
-{"code":"CU","en":"Cuba","zh":"古巴","pinyin":"Gǔbā"},
-{"code":"CY","en":"Cyprus","zh":"塞浦路斯","pinyin":"Sāipǔlùsī"},
-{"code":"CZ","en":"Czech Republic","zh":"捷克","pinyin":"Jiékè"},
-{"code":"DK","en":"Denmark","zh":"丹麦","pinyin":"Dānmài"},
-{"code":"DJ","en":"Djibouti","zh":"吉布提","pinyin":"Jíbùtí"},
-{"code":"DM","en":"Dominica","zh":"多米尼克","pinyin":"Duōmǐníkè"},
-{"code":"DO","en":"Dominican Republic","zh":"多米尼加共和国","pinyin":"Duōmǐníjiā Gònghéguó"},
-{"code":"EC","en":"Ecuador","zh":"厄瓜多尔","pinyin":"Èguāduō’ěr"},
-{"code":"EG","en":"Egypt","zh":"埃及","pinyin":"Āijí"},
-{"code":"SV","en":"El Salvador","zh":"萨尔瓦多","pinyin":"Sà’ěrwǎduō"},
-{"code":"GQ","en":"Equatorial Guinea","zh":"赤道几内亚","pinyin":"Chìdào Jǐnèi yà"},
-{"code":"ER","en":"Eritrea","zh":"厄立特里亚","pinyin":"Èlìtèlǐyà"},
-{"code":"EE","en":"Estonia","zh":"爱沙尼亚","pinyin":"Àishāníyà"},
-{"code":"ET","en":"Ethiopia","zh":"埃塞俄比亚","pinyin":"Āisāi’ébǐyà"},
-{"code":"FJ","en":"Fiji","zh":"斐济","pinyin":"Fěijì"},
-{"code":"FI","en":"Finland","zh":"芬兰","pinyin":"Fēnlán"},
-{"code":"FR","en":"France","zh":"法国","pinyin":"Fǎguó"},
-{"code":"GA","en":"Gabon","zh":"加蓬","pinyin":"Jiāpéng"},
-{"code":"GM","en":"Gambia","zh":"冈比亚","pinyin":"Gāngbǐyà"},
-{"code":"GE","en":"Georgia","zh":"格鲁吉亚","pinyin":"Gélǔjíyà"},
-{"code":"DE","en":"Germany","zh":"德国","pinyin":"Déguó"},
-{"code":"GH","en":"Ghana","zh":"加纳","pinyin":"Jiānà"},
-{"code":"GR","en":"Greece","zh":"希腊","pinyin":"Xīlà"},
-{"code":"GD","en":"Grenada","zh":"格林纳达","pinyin":"Gélínnàdá"},
-{"code":"GT","en":"Guatemala","zh":"危地马拉","pinyin":"Wēidìmǎlā"},
-{"code":"GN","en":"Guinea","zh":"几内亚","pinyin":"Jǐnèiyà"},
-{"code":"GW","en":"Guinea‑Bissau","zh":"几内亚比绍","pinyin":"Jǐnèiyà Bǐshào"},
-{"code":"GY","en":"Guyana","zh":"圭亚那","pinyin":"Guīyànà"},
-{"code":"HT","en":"Haiti","zh":"海地","pinyin":"Hǎidì"},
-{"code":"HN","en":"Honduras","zh":"洪都拉斯","pinyin":"Hóngdūlāsī"},
-{"code":"HU","en":"Hungary","zh":"匈牙利","pinyin":"Xiōngyálì"},
-{"code":"IS","en":"Iceland","zh":"冰岛","pinyin":"Bīngdǎo"},
-{"code":"IN","en":"India","zh":"印度","pinyin":"Yìndù"},
-{"code":"ID","en":"Indonesia","zh":"印度尼西亚","pinyin":"Yìndùníxīyà"},
-{"code":"IR","en":"Iran","zh":"伊朗","pinyin":"Yīlǎng"},
-{"code":"IQ","en":"Iraq","zh":"伊拉克","pinyin":"Yīlākè"},
-{"code":"IE","en":"Ireland","zh":"爱尔兰","pinyin":"Ài’ěrlán"},
-{"code":"IL","en":"Israel","zh":"以色列","pinyin":"Yǐsèliè"},
-{"code":"IT","en":"Italy","zh":"意大利","pinyin":"Yìdàlì"},
-{"code":"JM","en":"Jamaica","zh":"牙买加","pinyin":"Yámǎijiā"},
-{"code":"JP","en":"Japan","zh":"日本","pinyin":"Rìběn"},
-{"code":"JO","en":"Jordan","zh":"约旦","pinyin":"Yuēdàn"},
-{"code":"KZ","en":"Kazakhstan","zh":"哈萨克斯坦","pinyin":"Hāsàkèsītǎn"},
-{"code":"KE","en":"Kenya","zh":"肯尼亚","pinyin":"Kěnníyà"},
-{"code":"KI","en":"Kiribati","zh":"基里巴斯","pinyin":"Jīlǐbāsī"},
-{"code":"KP","en":"North Korea","zh":"朝鲜","pinyin":"Cháoxiǎn"},
-{"code":"KR","en":"South Korea","zh":"韩国","pinyin":"Hánguó"},
-{"code":"KW","en":"Kuwait","zh":"科威特","pinyin":"Kēwēitè"},
-{"code":"KG","en":"Kyrgyzstan","zh":"吉尔吉斯斯坦","pinyin":"Jí’ěrjísī
+  { zh: "中国", pinyin: "Zhōngguó", en: "China" },
+  { zh: "美国", pinyin: "Měiguó", en: "United States" },
+  { zh: "日本", pinyin: "Rìběn", en: "Japan" },
+  { zh: "法国", pinyin: "Fǎguó", en: "France" },
+  { zh: "德国", pinyin: "Déguó", en: "Germany" },
+  { zh: "英国", pinyin: "Yīngguó", en: "United Kingdom" },
+  { zh: "加拿大", pinyin: "Jiānádà", en: "Canada" },
+  { zh: "澳大利亚", pinyin: "Àodàlìyà", en: "Australia" },
+  { zh: "新西兰", pinyin: "Xīnxīlán", en: "New Zealand" },
+  { zh: "俄罗斯", pinyin: "Éluósī", en: "Russia" },
+
+  { zh: "韩国", pinyin: "Hánguó", en: "South Korea" },
+  { zh: "朝鲜", pinyin: "Cháoxiǎn", en: "North Korea" },
+  { zh: "印度", pinyin: "Yìndù", en: "India" },
+  { zh: "巴基斯坦", pinyin: "Bājīsītǎn", en: "Pakistan" },
+  { zh: "孟加拉国", pinyin: "Mèngjiālāguó", en: "Bangladesh" },
+  { zh: "斯里兰卡", pinyin: "Sīlǐlánkǎ", en: "Sri Lanka" },
+  { zh: "尼泊尔", pinyin: "Nípǒ'ěr", en: "Nepal" },
+
+  { zh: "意大利", pinyin: "Yìdàlì", en: "Italy" },
+  { zh: "西班牙", pinyin: "Xībānyá", en: "Spain" },
+  { zh: "葡萄牙", pinyin: "Pútáoyá", en: "Portugal" },
+  { zh: "荷兰", pinyin: "Hélán", en: "Netherlands" },
+  { zh: "比利时", pinyin: "Bǐlìshí", en: "Belgium" },
+  { zh: "瑞士", pinyin: "Ruìshì", en: "Switzerland" },
+  { zh: "奥地利", pinyin: "Àodìlì", en: "Austria" },
+  { zh: "瑞典", pinyin: "Ruìdiǎn", en: "Sweden" },
+  { zh: "挪威", pinyin: "Nuówēi", en: "Norway" },
+  { zh: "芬兰", pinyin: "Fēnlán", en: "Finland" },
+
+  { zh: "巴西", pinyin: "Bāxī", en: "Brazil" },
+  { zh: "阿根廷", pinyin: "Āgēntíng", en: "Argentina" },
+  { zh: "智利", pinyin: "Zhìlì", en: "Chile" },
+  { zh: "秘鲁", pinyin: "Bìlǔ", en: "Peru" },
+  { zh: "哥伦比亚", pinyin: "Gēlúnbǐyà", en: "Colombia" },
+  { zh: "墨西哥", pinyin: "Mòxīgē", en: "Mexico" },
+
+  { zh: "埃及", pinyin: "Āijí", en: "Egypt" },
+  { zh: "南非", pinyin: "Nánfēi", en: "South Africa" },
+  { zh: "肯尼亚", pinyin: "Kěnníyà", en: "Kenya" },
+  { zh: "尼日利亚", pinyin: "Níjìlìyà", en: "Nigeria" },
+
+  { zh: "以色列", pinyin: "Yǐsèliè", en: "Israel" },
+  { zh: "土耳其", pinyin: "Tǔ'ěrqí", en: "Turkey" },
+  { zh: "沙特阿拉伯", pinyin: "Shātè Ālābó", en: "Saudi Arabia" },
+  { zh: "阿联酋", pinyin: "Āliánqiú", en: "United Arab Emirates" }
 ];
-
-function generate() {
-  const c = countries[Math.floor(Math.random() * countries.length)];
-  document.getElementById("card").innerHTML = `
-    <div class="card">
-      <div class="zh">${c.zh}</div>
-      <div class="pinyin">${c.pinyin}</div>
-      <div class="en">${c.en}</div>
-    </div>
-  `;
-}
 </script>
-
-</body>
-</html>
