@@ -2,7 +2,8 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>Random Country Generator</title>
+  <title>🌍 Talking Country Generator</title>
+
   <style>
     body {
       font-family: Arial, sans-serif;
@@ -10,45 +11,67 @@
       background: #f1f5f9;
       padding: 40px;
     }
+
+    h1 {
+      font-size: 32px;
+    }
+
     button {
-      padding: 10px 20px;
-      font-size: 16px;
-      border-radius: 12px;
+      padding: 14px 26px;
+      font-size: 18px;
+      border-radius: 14px;
       border: none;
       background: #2563eb;
       color: white;
       cursor: pointer;
+      margin-top: 20px;
     }
+
+    button:hover {
+      background: #1d4ed8;
+    }
+
     .card {
-      margin-top: 30px;
+      margin-top: 40px;
       background: white;
-      padding: 30px;
-      border-radius: 20px;
+      padding: 30px 40px;
+      border-radius: 24px;
       display: inline-block;
       box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+      min-width: 260px;
     }
+
     .zh {
-      font-size: 36px;
+      font-size: 40px;
       font-weight: bold;
+      cursor: pointer;
     }
+
     .pinyin {
       font-size: 20px;
       color: #555;
+      margin-top: 8px;
     }
+
     .en {
-      font-size: 16px;
-      color: #888;
+      font-size: 18px;
+      color: #777;
+      margin-top: 12px;
+      cursor: pointer;
     }
-    .zh, .en {
-  cursor: pointer;
-}
 
-  .zh:hover, .en:hover {
-  color: #2563eb;
-}
+    .hint {
+      margin-top: 12px;
+      font-size: 14px;
+      color: #999;
+    }
 
+    .zh:hover, .en:hover {
+      color: #2563eb;
+    }
   </style>
 </head>
+
 <body>
 
 <h1>🌍 Random Country</h1>
@@ -57,56 +80,43 @@
 <div id="card"></div>
 
 <script>
+/* ---------- TEXT TO SPEECH ---------- */
+function speak(text, lang) {
+  window.speechSynthesis.cancel();
+  const utterance = new SpeechSynthesisUtterance(text);
+  utterance.lang = lang;
+  utterance.rate = 0.8; // kid-friendly speed
+  speechSynthesis.speak(utterance);
+}
+
+/* ---------- COUNTRY DATA ---------- */
 const countries = [
   { zh: "中国", pinyin: "Zhōngguó", en: "China" },
   { zh: "美国", pinyin: "Měiguó", en: "United States" },
   { zh: "日本", pinyin: "Rìběn", en: "Japan" },
+  { zh: "韩国", pinyin: "Hánguó", en: "South Korea" },
+  { zh: "英国", pinyin: "Yīngguó", en: "United Kingdom" },
   { zh: "法国", pinyin: "Fǎguó", en: "France" },
   { zh: "德国", pinyin: "Déguó", en: "Germany" },
-  { zh: "英国", pinyin: "Yīngguó", en: "United Kingdom" },
+  { zh: "意大利", pinyin: "Yìdàlì", en: "Italy" },
+  { zh: "西班牙", pinyin: "Xībānyá", en: "Spain" },
   { zh: "加拿大", pinyin: "Jiānádà", en: "Canada" },
   { zh: "澳大利亚", pinyin: "Àodàlìyà", en: "Australia" },
   { zh: "新西兰", pinyin: "Xīnxīlán", en: "New Zealand" },
   { zh: "俄罗斯", pinyin: "Éluósī", en: "Russia" },
-
-  { zh: "韩国", pinyin: "Hánguó", en: "South Korea" },
-  { zh: "朝鲜", pinyin: "Cháoxiǎn", en: "North Korea" },
   { zh: "印度", pinyin: "Yìndù", en: "India" },
-  { zh: "巴基斯坦", pinyin: "Bājīsītǎn", en: "Pakistan" },
-  { zh: "孟加拉国", pinyin: "Mèngjiālāguó", en: "Bangladesh" },
-  { zh: "斯里兰卡", pinyin: "Sīlǐlánkǎ", en: "Sri Lanka" },
-  { zh: "尼泊尔", pinyin: "Nípǒ'ěr", en: "Nepal" },
-
-  { zh: "意大利", pinyin: "Yìdàlì", en: "Italy" },
-  { zh: "西班牙", pinyin: "Xībānyá", en: "Spain" },
-  { zh: "葡萄牙", pinyin: "Pútáoyá", en: "Portugal" },
-  { zh: "荷兰", pinyin: "Hélán", en: "Netherlands" },
-  { zh: "比利时", pinyin: "Bǐlìshí", en: "Belgium" },
-  { zh: "瑞士", pinyin: "Ruìshì", en: "Switzerland" },
-  { zh: "奥地利", pinyin: "Àodìlì", en: "Austria" },
-  { zh: "瑞典", pinyin: "Ruìdiǎn", en: "Sweden" },
-  { zh: "挪威", pinyin: "Nuówēi", en: "Norway" },
-  { zh: "芬兰", pinyin: "Fēnlán", en: "Finland" },
-
   { zh: "巴西", pinyin: "Bāxī", en: "Brazil" },
-  { zh: "阿根廷", pinyin: "Āgēntíng", en: "Argentina" },
-  { zh: "智利", pinyin: "Zhìlì", en: "Chile" },
-  { zh: "秘鲁", pinyin: "Bìlǔ", en: "Peru" },
-  { zh: "哥伦比亚", pinyin: "Gēlúnbǐyà", en: "Colombia" },
   { zh: "墨西哥", pinyin: "Mòxīgē", en: "Mexico" },
-
-  { zh: "埃及", pinyin: "Āijí", en: "Egypt" },
+  { zh: "阿根廷", pinyin: "Āgēntíng", en: "Argentina" },
   { zh: "南非", pinyin: "Nánfēi", en: "South Africa" },
-  { zh: "肯尼亚", pinyin: "Kěnníyà", en: "Kenya" },
-  { zh: "尼日利亚", pinyin: "Níjìlìyà", en: "Nigeria" },
-
+  { zh: "埃及", pinyin: "Āijí", en: "Egypt" },
   { zh: "以色列", pinyin: "Yǐsèliè", en: "Israel" },
   { zh: "土耳其", pinyin: "Tǔ'ěrqí", en: "Turkey" },
   { zh: "沙特阿拉伯", pinyin: "Shātè Ālābó", en: "Saudi Arabia" },
   { zh: "阿联酋", pinyin: "Āliánqiú", en: "United Arab Emirates" }
 ];
 
-
+/* ---------- GENERATE ---------- */
 function generate() {
   const c = countries[Math.floor(Math.random() * countries.length)];
 
@@ -115,24 +125,16 @@ function generate() {
       <div class="zh" onclick="speak('${c.zh}', 'zh-CN')">
         ${c.zh} 🔊
       </div>
-      <div class="pinyin">
-        ${c.pinyin}
-      </div>
+      <div class="pinyin">${c.pinyin}</div>
       <div class="en" onclick="speak('${c.en}', 'en-US')">
         ${c.en} 🔊
+      </div>
+      <div class="hint">
+        Tap Chinese or English to hear it
       </div>
     </div>
   `;
 }
-
-  function speak(text, lang) {
-  window.speechSynthesis.cancel(); // stop previous speech
-  const utterance = new SpeechSynthesisUtterance(text);
-  utterance.lang = lang;
-  utterance.rate = 0.8; // slower = kid friendly
-  speechSynthesis.speak(utterance);
-}
-
 </script>
 
 </body>
