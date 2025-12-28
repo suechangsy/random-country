@@ -39,6 +39,14 @@
       font-size: 16px;
       color: #888;
     }
+    .zh, .en {
+  cursor: pointer;
+}
+
+  .zh:hover, .en:hover {
+  color: #2563eb;
+}
+
   </style>
 </head>
 <body>
@@ -101,14 +109,30 @@ const countries = [
 
 function generate() {
   const c = countries[Math.floor(Math.random() * countries.length)];
+
   document.getElementById("card").innerHTML = `
     <div class="card">
-      <div class="zh">${c.zh}</div>
-      <div class="pinyin">${c.pinyin}</div>
-      <div class="en">${c.en}</div>
+      <div class="zh" onclick="speak('${c.zh}', 'zh-CN')">
+        ${c.zh} 🔊
+      </div>
+      <div class="pinyin">
+        ${c.pinyin}
+      </div>
+      <div class="en" onclick="speak('${c.en}', 'en-US')">
+        ${c.en} 🔊
+      </div>
     </div>
   `;
 }
+
+  function speak(text, lang) {
+  window.speechSynthesis.cancel(); // stop previous speech
+  const utterance = new SpeechSynthesisUtterance(text);
+  utterance.lang = lang;
+  utterance.rate = 0.8; // slower = kid friendly
+  speechSynthesis.speak(utterance);
+}
+
 </script>
 
 </body>
