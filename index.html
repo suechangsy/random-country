@@ -1,3 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Random Country Generator</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      background: #f1f5f9;
+      padding: 40px;
+    }
+    button {
+      padding: 10px 20px;
+      font-size: 16px;
+      border-radius: 12px;
+      border: none;
+      background: #2563eb;
+      color: white;
+      cursor: pointer;
+    }
+    .card {
+      margin-top: 30px;
+      background: white;
+      padding: 30px;
+      border-radius: 20px;
+      display: inline-block;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+    }
+    .zh {
+      font-size: 36px;
+      font-weight: bold;
+    }
+    .pinyin {
+      font-size: 20px;
+      color: #555;
+    }
+    .en {
+      font-size: 16px;
+      color: #888;
+    }
+  </style>
+</head>
+<body>
+
+<h1>🌍 Random Country</h1>
+<button onclick="generate()">Generate</button>
+
+<div id="card"></div>
+
 <script>
 const countries = [
   { zh: "中国", pinyin: "Zhōngguó", en: "China" },
@@ -47,4 +97,19 @@ const countries = [
   { zh: "沙特阿拉伯", pinyin: "Shātè Ālābó", en: "Saudi Arabia" },
   { zh: "阿联酋", pinyin: "Āliánqiú", en: "United Arab Emirates" }
 ];
+
+
+function generate() {
+  const c = countries[Math.floor(Math.random() * countries.length)];
+  document.getElementById("card").innerHTML = `
+    <div class="card">
+      <div class="zh">${c.zh}</div>
+      <div class="pinyin">${c.pinyin}</div>
+      <div class="en">${c.en}</div>
+    </div>
+  `;
+}
 </script>
+
+</body>
+</html>
